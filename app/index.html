@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mark Area with Bounding Coordinates</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
+    <script src="maps.js"></script>
+    <style>
+      #map {
+        height: 500px;
+        width: 100%;
+      }
+      .controls {
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+      }
+      input,
+      button {
+        margin-bottom: 10px;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Left Panel -->
+      <div class="sidebar">
+        <h1>Polygon Tool</h1>
+        <div class="search-section">
+          <input
+            id="search-bar"
+            class="search-bar"
+            type="text"
+            placeholder="Search for a place..."
+          />
+        </div>
+        <div class="button-section">
+            <button id="search" class="button">Search</button>
+          <button id="calculate-area" class="button">Calculate Area</button>
+          <button id="clear" class="button">Clear Map</button>
+        </div>
+        <div id="area-display" class="area-display">Area: -- km²</div>
+      </div>
+  
+      <!-- Right Panel -->
+      <div id="map" class="map"></div>
+    </div>
+  
+    <!-- Load script.js after Google Maps API is loaded -->
+    <script src="script.js"></script>
+  </body>
+</html>

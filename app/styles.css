@@ -1,0 +1,108 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+    display: flex;
+    height: 100vh;
+    overflow: hidden; /* Prevent scrollbars */
+  }
+  
+  /* Container Layout */
+  .container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Sidebar Styling */
+  .sidebar {
+    width: 30%;
+    background: #1e293b; /* Sleek dark blue-gray */
+    color: #ffffff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+  }
+  
+  .sidebar h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #ffffff;
+  }
+  
+  /* Search Section */
+  .search-section {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .search-bar {
+    width: 90%;
+    padding: 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  /* Button Section */
+  .button-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .button {
+    background: #3b82f6; /* Default blue color for buttons */
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .button:hover {
+    background: #2563eb; /* Darker blue for hover */
+    transform: scale(1.02); /* Slight hover effect */
+  }
+  
+  /* Highlight search Button */
+  #search {
+    background: #facc15; /* Bright yellow */
+    color: #1e293b; /* Dark text */
+  }
+  
+  #search:hover {
+    background: #eab308; /* Darker yellow for hover */
+    transform: scale(1.05); /* Slight hover effect */
+  }
+  
+  /* Area Display */
+  .area-display {
+    background: #334155; /* Slightly lighter blue-gray */
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #ffffff;
+  }
+  
+  /* Map Styling */
+  .map {
+    flex: 1; /* Fill remaining space */
+    height: 100%; /* Ensure full height */
+  }
+  
