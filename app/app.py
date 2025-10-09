@@ -1,8 +1,10 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, send_file
 import os
 import csv
 import subprocess
 from threading import Thread
+import io
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -52,6 +54,38 @@ def call_another_script(file_path):
 @app.route('/')
 def index():
     return send_from_directory(os.getcwd(), 'index.html')
+
+# Generate report and return the Word document
+@app.route('/generate-report', methods=['POST'])
+def generate_report():
+    try:
+        # Ensure coordinates CSV exists; if the frontend sends coordinates, overwrite first
+        payload = request.get_json(silent=True) or {}
+        coords = payload.get('coordinates')
+        if coords and isinstance(coords, list):
+            with open(csv_file_path, mode='w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(['Latitude', 'Longitude'])
+                for coord in coords:
+                    writer.writerow([coord['lat'], coord['lng']])
+
+        # Run model to generate report.docx
+        result = subprocess.run(['python', 'model.py', csv_file_path], capture_output=True, text=True)
+        if result.returncode != 0:
+            return jsonify({"message": "Failed to generate report", "stderr": result.stderr}), 500
+
+        # Return the generated file
+        report_path = os.path.join(os.getcwd(), 'report.docx')
+        if not os.path.exists(report_path):
+            # Fallback if model saved elsewhere
+            report_path = os.path.join(os.getcwd(), 'app', 'report.docx') if os.path.exists(os.path.join(os.getcwd(), 'app', 'report.docx')) else None
+        if not report_path or not os.path.exists(report_path):
+            return jsonify({"message": "Report not found after generation"}), 500
+
+        return send_file(report_path, as_attachment=True, download_name='report.docx')
+
+    except Exception as e:
+        return jsonify({"message": f"Error generating report: {str(e)}"}), 500
 
 # Start the server
 if __name__ == '__main__':

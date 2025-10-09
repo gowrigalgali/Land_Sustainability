@@ -199,4 +199,62 @@ document.addEventListener('DOMContentLoaded', function() {
   document
     .getElementById("clear")
     .addEventListener("click", clearMap);
+
+  // Attach event listener for the "Generate Report" button
+  document
+    .getElementById("report")
+    .addEventListener("click", async function() {
+      try {
+        if (coordinates.length < 3) {
+          alert("Please draw a polygon with at least 3 points before generating a report.");
+          return;
+        }
+
+        const response = await fetch("http://127.0.0.1:5000/generate-report", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ coordinates }),
+        });
+
+        const contentType = response.headers.get('content-type') || '';
+
+        if (!response.ok) {
+          const errorBody = await response.text().catch(() => "");
+          let message = "Failed to generate report";
+          try {
+            const parsed = JSON.parse(errorBody);
+            if (parsed && parsed.message) message = parsed.message;
+          } catch (_) {
+            // Non-JSON error body; include status and snippet for debugging
+            message = `${message} (status ${response.status}). ${errorBody?.slice(0, 200)}`;
+          }
+          console.error("Generate report failed", {
+            status: response.status,
+            contentType,
+            body: errorBody,
+          });
+          throw new Error(message);
+        }
+
+        // If server didn't return a DOCX, surface the response as text
+        if (!contentType.includes('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+          const text = await response.text().catch(() => "");
+          console.error("Unexpected content-type for report", { contentType, text });
+          throw new Error(text || `Unexpected response type: ${contentType}`);
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'report.docx';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      } catch (e) {
+        console.error(e);
+        alert("Error generating report. Please try again.");
+      }
+    });
 });
