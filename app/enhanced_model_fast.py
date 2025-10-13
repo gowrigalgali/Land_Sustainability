@@ -1081,12 +1081,11 @@ def save_enhanced_report_with_risks(file_path, years, gci_values, future_years, 
             hdr = table.rows[0].cells
             hdr[0].text = "Year"
             hdr[1].text = "Predicted GCI"
-            hdr[2].text = "CI"
             for i, (year, pred) in enumerate(zip(future_years.flatten(), pred_values)):
                 row = table.add_row().cells
                 row[0].text = str(int(year))
                 row[1].text = f"{pred:.4f}"
-                row[2].text = "N/A"  # Confidence intervals removed per request
+                
     except Exception as e:
         print(f"[WARN] Could not populate predictions tables: {e}")
 
