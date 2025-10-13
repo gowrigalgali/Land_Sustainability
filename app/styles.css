@@ -90,6 +90,34 @@
     transform: scale(1.05); /* Slight hover effect */
   }
   
+  /* Enhanced Report Button */
+  .enhanced-button {
+    background: linear-gradient(135deg, #10b981, #059669); /* Green gradient */
+    color: white;
+    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .enhanced-button:hover {
+    background: linear-gradient(135deg, #059669, #047857); /* Darker green gradient */
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+  
+  .enhanced-button:active {
+    transform: scale(0.98);
+  }
+  
+  .enhanced-button::before {
+    content: "✨";
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2em;
+  }
+  
   /* Area Display */
   .area-display {
     background: #334155; /* Slightly lighter blue-gray */
